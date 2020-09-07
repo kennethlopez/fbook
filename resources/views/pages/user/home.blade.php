@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    {{ Auth::user()->name }}'s' Homepage
+    {{ Auth::user()->name }}'s Homepage
 @endsection
 
 @section('template_fastload_css')
@@ -11,9 +11,10 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-12 col-lg-10 offset-lg-1">
+            <div class="col-12 col-lg-8 offset-lg-2">
 
-                @include('panels.welcome-panel')
+                <!-- @include('panels.welcome-panel') -->
+                @include('partials.posts')
 
             </div>
         </div>

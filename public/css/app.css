@@ -17913,3 +17913,18 @@ div[data-toggle=buttons] label.active {
   border-radius: 0 0.25rem 0.25rem 0;
 }
 
+.multiline-text {
+  background-color: #f0f2f5;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.multiline-text .multiline-text-input {
+  outline: none;
+}
+
+.multiline-text .placeholder {
+  position: fixed;
+  color: #b1b7ba;
+}
+

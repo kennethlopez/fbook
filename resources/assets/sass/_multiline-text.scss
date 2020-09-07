@@ -1,0 +1,14 @@
+.multiline-text {
+	background-color: $comment-background;
+	padding: 10px;
+    border-radius: 20px;
+
+	.multiline-text-input {
+		outline: none;
+	}
+
+	.placeholder {
+		position: fixed;
+		color: $input-color-placeholder;
+	}
+}

@@ -46,7 +46,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'activated',
-        'token',
+        // 'token',
     ];
 
     /**
@@ -100,6 +100,7 @@ class User extends Authenticatable
         'admin_ip_address'                  => 'string',
         'updated_ip_address'                => 'string',
         'deleted_ip_address'                => 'string',
+        'token'                             => 'string',
     ];
 
     /**
@@ -108,6 +109,14 @@ class User extends Authenticatable
     public function social()
     {
         return $this->hasMany('App\Models\Social');
+    }
+
+    /**
+     * Get the posts for the user.
+     */
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
     }
 
     /**
