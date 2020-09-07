@@ -7,7 +7,8 @@ const store = new Vuex.Store({
  state: {
  	multilineTexts: {}
  },
- getters: {},
+ getters: {
+ },
  mutations: {
  	UPDATE_MULTILINE_TEXTS(state, multilineTexts) {
  		state.multilineTexts = multilineTexts

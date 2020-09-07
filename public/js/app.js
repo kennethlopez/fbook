@@ -1908,7 +1908,6 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store */ "./resources/assets/js/store/index.js");
 //
 //
 //
@@ -1916,10 +1915,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MultilineText',
   props: {
+    textChangeListener: Function,
     placeholder: String,
     uid: Number
   },
@@ -1936,8 +1935,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     typing: function typing(event) {
-      this.textContent = event.target.textContent;
-      this.updateState();
+      var content = event.target.textContent;
+      this.textContent = content;
+
+      if (this.textChangeListener) {
+        this.textChangeListener(content);
+      }
     },
     focusOnInput: function focusOnInput(event) {
       var children = event.target.parentNode.children;
@@ -1951,19 +1954,6 @@ __webpack_require__.r(__webpack_exports__);
           break;
         }
       }
-    },
-    updateState: function updateState() {
-      var multilineTexts = this.$store.state.multilineTexts;
-      var uid = this.uid;
-      var id = this.id;
-      var textContent = this.textContent;
-      var multilineText = {
-        uid: uid,
-        id: id,
-        text: textContent
-      };
-      multilineTexts[uid] = multilineText;
-      this.$store.commit(_store__WEBPACK_IMPORTED_MODULE_0__["actions"].UPDATE_MULTILINE_TEXTS, multilineTexts);
     }
   }
 });
@@ -2010,6 +2000,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2023,18 +2016,29 @@ __webpack_require__.r(__webpack_exports__);
     var placeholder = "What's on your mind, " + user.name + "?";
     var href = "/profile/" + user.name;
     var uid = this._uid;
+    var postDisabled = true;
+    var postContent = "";
+    var that = this;
+
+    var textChangeListener = function textChangeListener(res) {
+      that.postDisabled = res.length > 0 ? false : true;
+      that.postContent = res;
+    };
+
     return {
       user: user,
       placeholder: placeholder,
       href: href,
-      uid: uid
+      uid: uid,
+      textChangeListener: textChangeListener,
+      postDisabled: postDisabled
     };
   },
   methods: {
     post: function post() {
       var post = {
         token: this.user.token,
-        content: this.$store.state.multilineTexts[this.uid].text
+        content: this.postContent
       };
       axios.post('/api/posts', post).then(function (res) {
         console.log("axios.post result:", res);
@@ -85955,7 +85959,7 @@ var render = function() {
     _c("div", {
       staticClass: "multiline-text-input",
       attrs: { id: _vm.id, contenteditable: "true" },
-      on: { keyup: _vm.typing }
+      on: { keydown: _vm.typing, keyup: _vm.typing }
     })
   ])
 }
@@ -86002,7 +86006,11 @@ var render = function() {
           { staticClass: "col" },
           [
             _c("MultilineText", {
-              attrs: { placeholder: _vm.placeholder, uid: _vm.uid }
+              attrs: {
+                placeholder: _vm.placeholder,
+                uid: _vm.uid,
+                "text-change-listener": _vm.textChangeListener
+              }
             })
           ],
           1
@@ -86017,7 +86025,7 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-primary w-100",
-              attrs: { type: "button" },
+              attrs: { type: "button", disabled: _vm.postDisabled },
               on: { click: _vm.post }
             },
             [_vm._v("Post")]

@@ -13,7 +13,10 @@
 				</div>
 
 				<div class="col">
-					<MultilineText :placeholder="placeholder" :uid="uid"/>
+					<MultilineText 
+						:placeholder="placeholder" 
+						:uid="uid" 
+						:text-change-listener="textChangeListener"/>
 				</div>
 			</div>
 
@@ -21,7 +24,7 @@
 
 			<div class="row">
 				<div class="col">
-					<button type="button" class="btn btn-primary w-100" @click="post">Post</button>
+					<button type="button" class="btn btn-primary w-100" @click="post" :disabled="postDisabled">Post</button>
 				</div>
 			</div>
 		</div>
@@ -29,7 +32,7 @@
 </template>
 
 <script>
-	import MultilineText from "../components/MultilineText.vue";
+	import MultilineText from '../components/MultilineText.vue';
 
 	export default {
 		components: {
@@ -43,19 +46,29 @@
 			let placeholder = "What's on your mind, " + user.name + "?";
 			let href = "/profile/" + user.name;
 			let uid = this._uid;
+			let postDisabled = true;
+			let postContent = "";
+
+			let that = this;
+			let textChangeListener = function(res) {
+				that.postDisabled = res.length > 0 ? false : true
+				that.postContent = res;
+			}
 
 			return {
 				user: user,
 				placeholder: placeholder,
 				href: href,
-				uid: uid
+				uid: uid,
+				textChangeListener: textChangeListener,
+				postDisabled: postDisabled
 			}
 		},
 		methods: {
 			post() {
 				let post = {
 					token: this.user.token,
-					content: this.$store.state.multilineTexts[this.uid].text
+					content: this.postContent,
 				};
 
 				axios.post('/api/posts', post)
