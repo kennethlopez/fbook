@@ -2016,6 +2016,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2027,7 +2037,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     var user = JSON.parse(this.userInfo);
-    this.postContent = "";
     return {
       user: user,
       placeholder: "What's on your mind, " + user.name + "?",
@@ -2045,43 +2054,56 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.$store.dispatch('fetchPosts', param);
   },
   computed: _objectSpread({
+    postContent: function postContent() {
+      if (this.createPostStatus == Vue.Constants.CreatePostStatus.NONE) {
+        return "";
+      } else {
+        return this.updatedText;
+      }
+    },
     posting: function posting() {
       return this.createPostStatus == Vue.Constants.CreatePostStatus.PENDING ? true : false;
     }
   }, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['posts', 'createPostStatus'])),
+  watch: {
+    '$store.state.createPostStatus': function $storeStateCreatePostStatus() {
+      if (this.$store.state.createPostStatus == Vue.Constants.CreatePostStatus.DONE) {
+        document.getElementById('postClose').click();
+        this.$store.dispatch('updateCreatePostStatus', Vue.Constants.CreatePostStatus.NONE);
+      }
+    }
+  },
   methods: {
     post: function post() {
-      var post = {
+      this.$store.dispatch('createPost', {
         token: this.user.token,
-        content: this.postContent
-      };
-      this.$store.dispatch('createPost', post);
+        content: this.updatedText
+      });
     },
     save: function save() {
-      var post = {
+      this.$store.dispatch('updatePost', {
         token: this.user.token,
-        content: this.postContent,
+        content: this.updatedText,
         id: this.selectedPost.id
-      };
-      this.$store.dispatch('updatePost', post);
+      });
     },
-    textChange: function textChange(text) {
-      this.postContent = text;
-      this.postDisabled = text.length > 0 ? false : true;
+    editPost: function editPost(post) {
+      this.selectedPost = post; // force render MultilineText component
+
+      if (this.selectedPost.content != this.updatedText) {
+        this.modalKey++;
+      }
     },
     deletePost: function deletePost(post) {
       this.$store.dispatch('deletePost', post);
     },
-    editPost: function editPost(post) {
-      this.selectedPost = post;
-
-      if (this.selectedPost.content != this.postContent) {
-        this.modalKey++;
-      }
-    },
     editPostTextChange: function editPostTextChange(text) {
-      this.postContent = text;
-      this.saveDisabled = text.length > 0 && text !== this.selectedPost.content ? false : true;
+      this.updatedText = text;
+      this.saveDisabled = text.length == 0 || text.localeCompare(this.selectedPost.content) == 0 ? true : false;
+    },
+    textChange: function textChange(text) {
+      this.updatedText = text;
+      this.postDisabled = text.length > 0 ? false : true;
     }
   }
 });
@@ -2118,7 +2140,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var editable = document.getElementById(this.id);
 
-    if (this.content) {
+    if (this.content && this.content.length > 0) {
       editable.innerText = this.content;
       this.textContent = this.content;
     }
@@ -2130,7 +2152,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     typing: function typing(event) {
-      this.$emit('text-change', this.textContent = event.target.innerText);
+      var text = event.target.innerText;
+
+      if (text.length == 1 && event.target.innerHTML == '<br>') {
+        text = "";
+      }
+
+      this.textContent = text;
+      this.$emit('text-change', text);
     },
     focusOnInput: function focusOnInput(event) {
       var children = event.target.parentNode.children;
@@ -86075,7 +86104,11 @@ var render = function() {
               { staticClass: "col" },
               [
                 _c("multiline-text", {
-                  attrs: { placeholder: _vm.placeholder },
+                  key: _vm.postContent,
+                  attrs: {
+                    content: _vm.postContent,
+                    placeholder: _vm.placeholder
+                  },
                   on: { "text-change": _vm.textChange }
                 })
               ],
@@ -86108,7 +86141,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm._l(_vm.posts, function(post) {
-        return _c("div", { staticClass: "card post" }, [
+        return _c("div", { key: post.updated_at, staticClass: "card post" }, [
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-md-11 post-header" }, [
@@ -86209,12 +86242,20 @@ var render = function() {
             [
               _c("div", { staticClass: "modal-dialog" }, [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(2),
-                  _vm._v(" "),
                   _c(
                     "div",
                     { staticClass: "modal-body" },
                     [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c("center", [
+                        _c("h4", { staticClass: "modal-title" }, [
+                          _vm._v("Edit Post")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
                       _c("multiline-text", {
                         key: _vm.modalKey,
                         attrs: {
@@ -86222,20 +86263,30 @@ var render = function() {
                           placeholder: _vm.placeholder
                         },
                         on: { "text-change": _vm.editPostTextChange }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary w-100",
+                          attrs: { type: "button", disabled: _vm.saveDisabled },
+                          on: { click: _vm.save }
+                        },
+                        [_vm._v("Save")]
+                      )
                     ],
                     1
                   ),
                   _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary w-100",
-                      attrs: { type: "button", disabled: _vm.saveDisabled },
-                      on: { click: _vm.save }
-                    },
-                    [_vm._v("Save")]
-                  )
+                  _vm.posting
+                    ? _c(
+                        "div",
+                        { staticClass: "posting", attrs: { id: "posting" } },
+                        [_vm._m(3)]
+                      )
+                    : _vm._e()
                 ])
               ])
             ]
@@ -86277,23 +86328,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h4", { staticClass: "modal-title" }, [
-        _vm._v("\n\t          Edit Post\n\t        ")
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          id: "postClose",
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "label" }, [
+      _c("h3", [_vm._v("Saving...")])
     ])
   }
 ]
@@ -100186,7 +100240,7 @@ var Constants = {
       CreatePostStatus: {
         NONE: 0,
         PENDING: 1,
-        CREATED: 2,
+        DONE: 2,
         ERROR: 3
       }
     };
@@ -100211,7 +100265,7 @@ var actions = {
     commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.PENDING);
     axios.post('/api/posts', post).then(function (res) {
       commit('CREATE_POST', res.data);
-      commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.CREATED);
+      commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.DONE);
     })["catch"](function (err) {
       commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.ERROR);
       console.log(err);
@@ -100229,9 +100283,12 @@ var actions = {
   },
   updatePost: function updatePost(_ref3, post) {
     var commit = _ref3.commit;
+    commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.PENDING);
     axios.post("/api/posts/".concat(post.id, "/update"), post).then(function (res) {
       commit('UPDATE_POST', res.data);
+      commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.DONE);
     })["catch"](function (err) {
+      commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.ERROR);
       console.log(err);
     });
   },
@@ -100242,6 +100299,10 @@ var actions = {
     })["catch"](function (err) {
       console.log(err);
     });
+  },
+  updateCreatePostStatus: function updateCreatePostStatus(_ref5, status) {
+    var commit = _ref5.commit;
+    commit('UPDATE_CREATE_POST_STATUS', status);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (actions);

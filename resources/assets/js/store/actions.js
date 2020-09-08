@@ -5,7 +5,7 @@ let actions = {
         axios.post('/api/posts', post)
             .then(res => {
                 commit('CREATE_POST', res.data)
-                commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.CREATED)
+                commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.DONE)
             }).catch(err => {
                 commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.ERROR)
                 console.log(err)
@@ -20,10 +20,14 @@ let actions = {
             })
     },
     updatePost({commit}, post) {
+        commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.PENDING)
+
         axios.post(`/api/posts/${post.id}/update`, post)
             .then(res => {
                 commit('UPDATE_POST', res.data);
+                commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.DONE)
             }).catch(err => {
+                commit('UPDATE_CREATE_POST_STATUS', Vue.Constants.CreatePostStatus.ERROR)
                 console.log(err)
             })
     },
@@ -35,7 +39,10 @@ let actions = {
             }).catch(err => {
                 console.log(err)
             })
-    }
+    },
+    updateCreatePostStatus({commit}, status) {
+        commit('UPDATE_CREATE_POST_STATUS', status)
+    },
 }
 
 export default actions

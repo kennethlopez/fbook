@@ -8,7 +8,7 @@ let Constants = {
     	CreatePostStatus: {
     		NONE: 0,
     		PENDING: 1,
-    		CREATED: 2,
+    		DONE: 2,
     		ERROR: 3
     	}
     };

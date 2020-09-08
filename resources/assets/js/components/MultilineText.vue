@@ -20,7 +20,7 @@
 		mounted() {
 			let editable = document.getElementById(this.id);
 
-			if(this.content) {
+			if(this.content && this.content.length > 0) {
 				editable.innerText = this.content;
 				this.textContent = this.content;
 			}
@@ -32,7 +32,15 @@
 		},
 		methods: {
 			typing(event) {
-				this.$emit('text-change', this.textContent = event.target.innerText);
+				let text = event.target.innerText
+
+				if (text.length == 1 && event.target.innerHTML == '<br>') {
+					text = ""
+				}
+
+				this.textContent = text
+
+				this.$emit('text-change', text);
 			},
 			focusOnInput(event) {
 				let children = event.target.parentNode.children;
