@@ -22,3 +22,4 @@ use Illuminate\Support\Facades\Route;
 Route::post('/posts', 'PostController@store');
 Route::get('/posts', 'PostController@get');
 Route::delete('/posts/{id}', 'PostController@delete');
+Route::post('/posts/{id}/update', 'PostController@up');

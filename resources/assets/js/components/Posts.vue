@@ -1,0 +1,35 @@
+<template>
+	<div>
+		<div v-for="post in posts">
+			<textarea>{{ post.content }}</textarea>
+			<hr/>
+		</div>
+	</div>
+</template>
+
+<script>
+	import {mapGetters} from 'vuex'
+
+	export default {
+		props: {
+			userInfo: String
+		},
+		data() {
+			console.log("data");
+		},
+        mounted() {
+        	let user = JSON.parse(this.userInfo);
+        	let param = {
+				token: this.user.token,
+			};
+
+			console.log("component mounted");
+            this.$store.dispatch('fetchPosts', param);
+        },
+        computed: {
+            ...mapGetters([
+                'posts'
+            ])
+        }
+    }	
+</script>

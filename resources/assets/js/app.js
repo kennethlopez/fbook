@@ -12,6 +12,16 @@ var password = require('password-strength-meter');
 
 window.Vue = require('vue');
 
+// import PortalVue from 'portal-vue';
+import Constants from './plugins/Constants';
+import store from './store';
+
+// Components
+import CreatePost from './components/CreatePost.vue';
+
+Vue.use(Constants);
+// Vue.use(PortalVue)
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -19,20 +29,15 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- // import global Constants
- import Constants from "./plugins/Constants";
-
- Vue.use(Constants);
-
- import store from "./store";
-
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('users-count', require('./components/UsersCount.vue').default);
-Vue.component('Post', require('./components/Post.vue').default);
 
 const app = new Vue({
     el: '#app',
-    store
+    store,
+    components: {
+        CreatePost,
+    }
 });
 
 $.fn.extend({

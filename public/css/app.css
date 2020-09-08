@@ -4939,7 +4939,7 @@ input[type=button].btn-block {
   background-color: #ffffff;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
+  border-radius: 10px;
 }
 
 .card > hr {
@@ -4954,14 +4954,14 @@ input[type=button].btn-block {
 
 .card > .list-group:first-child {
   border-top-width: 0;
-  border-top-left-radius: calc(0.25rem - 1px);
-  border-top-right-radius: calc(0.25rem - 1px);
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
 }
 
 .card > .list-group:last-child {
   border-bottom-width: 0;
-  border-bottom-right-radius: calc(0.25rem - 1px);
-  border-bottom-left-radius: calc(0.25rem - 1px);
+  border-bottom-right-radius: 9px;
+  border-bottom-left-radius: 9px;
 }
 
 .card > .card-header + .list-group,
@@ -5004,7 +5004,7 @@ input[type=button].btn-block {
 }
 
 .card-header:first-child {
-  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+  border-radius: 9px 9px 0 0;
 }
 
 .card-footer {
@@ -5014,7 +5014,7 @@ input[type=button].btn-block {
 }
 
 .card-footer:last-child {
-  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+  border-radius: 0 0 9px 9px;
 }
 
 .card-header-tabs {
@@ -5036,7 +5036,7 @@ input[type=button].btn-block {
   bottom: 0;
   left: 0;
   padding: 1.25rem;
-  border-radius: calc(0.25rem - 1px);
+  border-radius: 9px;
 }
 
 .card-img,
@@ -5048,14 +5048,14 @@ input[type=button].btn-block {
 
 .card-img,
 .card-img-top {
-  border-top-left-radius: calc(0.25rem - 1px);
-  border-top-right-radius: calc(0.25rem - 1px);
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
 }
 
 .card-img,
 .card-img-bottom {
-  border-bottom-right-radius: calc(0.25rem - 1px);
-  border-bottom-left-radius: calc(0.25rem - 1px);
+  border-bottom-right-radius: 9px;
+  border-bottom-left-radius: 9px;
 }
 
 .card-deck .card {
@@ -17924,7 +17924,53 @@ div[data-toggle=buttons] label.active {
 }
 
 .multiline-text .placeholder {
-  position: fixed;
+  position: absolute;
   color: #b1b7ba;
+}
+
+.post {
+  margin-top: 1.5em;
+  border-radius: 10px;
+}
+
+.post .post-header {
+  line-height: 1.2;
+}
+
+.post .post-header .post-user-name {
+  font-weight: 600;
+  display: block;
+  font-size: 1.2em;
+}
+
+.post .post-header .created-at {
+  font-family: sans-serif;
+}
+
+.post .post-content {
+  white-space: break-spaces;
+  margin-top: 1em;
+  font-size: 1.5em;
+}
+
+.post .nav-link,
+.post .dropdown-toggle {
+  padding-top: 0;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.posting {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.posting .label {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-40%) translateY(-50%);
 }
 

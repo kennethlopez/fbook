@@ -1,20 +1,15 @@
-import Vue from "vue";
-import Vuex from "vuex";
- 
-Vue.use(Vuex);
- 
-const store = new Vuex.Store({
- state: {
- 	multilineTexts: {}
- },
- getters: {
- },
- mutations: {
- 	UPDATE_MULTILINE_TEXTS(state, multilineTexts) {
- 		state.multilineTexts = multilineTexts
- 	}
- }
-});
+import Vue from 'vue'
+import Vuex from 'vuex'
+import actions from './actions'
+import mutations from './mutations'
+import getters from './getters'
+import state from "./state";
 
-export default store;
-export {default as actions} from './actions';
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+    state,
+    mutations,
+    getters,
+    actions
+})

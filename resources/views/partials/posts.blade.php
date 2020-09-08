@@ -1,3 +1,4 @@
 <div>
-	<Post user-info="{{ Auth::user() }}"/>
+	<create-post user-info="{{ Auth::user() }}"/>
+	<!-- <posts user-info="{{ Auth::user() }}"/> -->
 </div>

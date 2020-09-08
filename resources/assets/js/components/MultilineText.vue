@@ -7,16 +7,22 @@
 
 <script>
 	export default {
-		name: 'MultilineText',
 		props: {
-			textChangeListener: Function,
 			placeholder: String,
-			uid: Number
+			content: String,
 		},
 		data() {
 			return {
-				id: Vue.Constants.MULTILINE_TEXT_ID_PREFIX + this.uid,
-				textContent: "",
+				id: Vue.Constants.MULTILINE_TEXT_ID_PREFIX + this._uid,
+				textContent: ""
+			}
+		},
+		mounted() {
+			let editable = document.getElementById(this.id);
+
+			if(this.content) {
+				editable.innerText = this.content;
+				this.textContent = this.content;
 			}
 		},
 		computed: {
@@ -26,14 +32,7 @@
 		},
 		methods: {
 			typing(event) {
-				let content = event.target.textContent;
-
-				this.textContent = content;
-
-				if(this.textChangeListener) {
-					this.textChangeListener(content);					
-				}
-				
+				this.$emit('text-change', this.textContent = event.target.innerText);
 			},
 			focusOnInput(event) {
 				let children = event.target.parentNode.children;

@@ -3,7 +3,14 @@ let Constants = {
   install(Vue, options) {
     //  create global Constants
     Vue.Constants = {
-    	MULTILINE_TEXT_ID_PREFIX: "multiline-text"
+    	MULTILINE_TEXT_ID_PREFIX: "multiline-text",
+
+    	CreatePostStatus: {
+    		NONE: 0,
+    		PENDING: 1,
+    		CREATED: 2,
+    		ERROR: 3
+    	}
     };
   }
 };
