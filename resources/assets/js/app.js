@@ -11,6 +11,7 @@ require('hideshowpassword');
 var password = require('password-strength-meter');
 
 window.Vue = require('vue');
+window.moment = require('moment');
 
 // import PortalVue from 'portal-vue';
 import Constants from './plugins/Constants';
@@ -31,6 +32,7 @@ Vue.use(Constants);
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('users-count', require('./components/UsersCount.vue').default);
+Vue.component('register', require('./components/Register.vue').default);
 
 const app = new Vue({
     el: '#app',

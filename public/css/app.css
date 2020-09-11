@@ -17974,3 +17974,14 @@ div[data-toggle=buttons] label.active {
   transform: translateX(-40%) translateY(-50%);
 }
 
+#register {
+  padding: 2em;
+}
+
+#register input,
+#register select,
+#register button {
+  margin-top: 1.5em;
+  border-radius: 15px;
+}
+

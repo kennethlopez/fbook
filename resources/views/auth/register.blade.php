@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<!-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
@@ -106,25 +106,34 @@
                             </div>
                         </div>
 
-                        <!-- <div class="row">
+                        <div class="row">
                             <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
                                 <p class="text-center mb-4">
                                     Or Use Social Logins to Register
                                 </p>
                                 @include('partials.socials')
                             </div>
-                        </div> -->
+                        </div>
 
                     </form>
                 </div>
             </div>
         </div>
     </div>
+</div> -->
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <register />
+        </div>
+    </div>
 </div>
+
 @endsection
 
 @section('footer_scripts')
-    @if(config('settings.reCaptchStatus'))
+    <!-- @if(config('settings.reCaptchStatus'))
         <script src='https://www.google.com/recaptcha/api.js'></script>
-    @endif
+    @endif -->
 @endsection

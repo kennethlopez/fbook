@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-for="post in posts">
-			<textarea>{{ post.content }}</textarea>
+			<div>{{ post.content }}</div>
 			<hr/>
 		</div>
 	</div>
@@ -15,7 +15,7 @@
 			userInfo: String
 		},
 		data() {
-			console.log("data");
+			console.log("asdasd");
 		},
         mounted() {
         	let user = JSON.parse(this.userInfo);
@@ -23,7 +23,7 @@
 				token: this.user.token,
 			};
 
-			console.log("component mounted");
+			console.log("component mounte");
             this.$store.dispatch('fetchPosts', param);
         },
         computed: {

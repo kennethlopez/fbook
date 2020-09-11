@@ -50,7 +50,7 @@
 						
 						<div>
 							<span class="post-user-name">{{ user.name }}</span>
-							<span class="created-at"></span>
+							<span class="created-at">{{ momentAgo(post['created_at']) }}</span>
 						</div>
 					</div>
 
@@ -158,7 +158,11 @@
         watch: {
 			'$store.state.createPostStatus': function() {
 				if (this.$store.state.createPostStatus == Vue.Constants.CreatePostStatus.DONE) {
-					document.getElementById('postClose').click();
+					let postClose = document.getElementById('postClose');
+
+					if (postClose) {
+						postClose.click();
+					}
 
 					this.$store.dispatch('updateCreatePostStatus', Vue.Constants.CreatePostStatus.NONE);
 				}
@@ -202,6 +206,12 @@
 				this.updatedText = text
 				this.postDisabled = text.length > 0 ? false : true
 			},
+
+			momentAgo(dateString) {
+				let date = new Date(dateString);
+
+				return moment(date).fromNow();
+			}
 		}
 	}
 </script>

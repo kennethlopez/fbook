@@ -20,11 +20,13 @@ return [
     'create_user_ph_username'    => 'Username',
     'create_user_icon_username'  => 'fa-user',
 
-    'create_user_label_firstname' => 'First Name',
+    // 'create_user_label_firstname' => 'First Name',
+    'create_user_label_firstname' => 'Comapny Name',
     'create_user_ph_firstname'    => 'First Name',
     'create_user_icon_firstname'  => 'fa-user',
 
-    'create_user_label_lastname' => 'Last Name',
+    // 'create_user_label_lastname' => 'Last Name',
+    'create_user_label_lastname' => 'Account/Personel',
     'create_user_ph_lastname'    => 'Last Name',
     'create_user_icon_lastname'  => 'fa-user',
 

@@ -21,8 +21,10 @@ return [
 
     // USER profile title
     'showProfileUsername'        => 'Username',
-    'showProfileFirstName'       => 'First Name',
-    'showProfileLastName'        => 'Last Name',
+    // 'showProfileFirstName'       => 'First Name',
+    'showProfileFirstName'       => 'Comapny Name',
+    // 'showProfileLastName'        => 'Last Name',
+    'showProfileLastName'        => 'Applicant/Personel',
     'showProfileEmail'           => 'E-mail Address',
     'showProfileLocation'        => 'Location',
     'showProfileBio'             => 'Bio',
